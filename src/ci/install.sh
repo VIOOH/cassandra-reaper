@@ -41,6 +41,20 @@ configure_ccm () {
   fi
 }
 
+try_set_jmxremote_access () {
+  set +e
+  cat /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/management/jmxremote.access
+  sudo chmod 777 /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/management/jmxremote.access
+  echo "cassandra     readwrite" >> /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/management/jmxremote.access
+  cat /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/management/jmxremote.access
+  # Second possible location for the file
+  cat /usr/local/openjdk-8/jre/lib/management/jmxremote.access
+  sudo chmod 777 /usr/local/openjdk-8/jre/lib/management/jmxremote.access
+  echo "cassandra     readwrite" >> /usr/local/openjdk-8/jre/lib/management/jmxremote.access
+  cat /usr/local/openjdk-8/jre/lib/management/jmxremote.access
+  set -e
+}
+
 case "${TEST_TYPE}" in
     "")
         echo "ERROR: Environment variable TEST_TYPE is unspecified."
@@ -49,11 +63,7 @@ case "${TEST_TYPE}" in
     "ccm"|"upgrade")
         cp src/ci/jmxremote.password ~/.local/jmxremote.password
         chmod 400 ~/.local/jmxremote.password
-        cat /usr/lib/jvm/java-8-oracle/jre/lib/management/jmxremote.access
-        sudo chmod 777 /usr/lib/jvm/java-8-oracle/jre/lib/management/jmxremote.access
-        echo "cassandra     readwrite" >> /usr/lib/jvm/java-8-oracle/jre/lib/management/jmxremote.access
-        cat /usr/lib/jvm/java-8-oracle/jre/lib/management/jmxremote.access
-        ccm create test -v $CASSANDRA_VERSION > /dev/null
+        try_set_jmxremote_access
         # use "2:0" to ensure the first datacenter name is "dc1" instead of "datacenter1", so to be compatible with CircleCI tests
         ccm populate --vnodes -n 2:0 > /dev/null
         for i in `seq 1 2` ; do

@@ -24,9 +24,9 @@ sudo apt-get install python-support > /dev/null
 sudo apt-get install python-pip > /dev/null
 sudo apt-get install nodejs > /dev/null
 sudo apt-get install npm > /dev/null
-pip install --user pyyaml > /dev/null
-pip install --user ccm > /dev/null
-npm install -g bower
+pip install pyyaml > /dev/null
+pip install ccm > /dev/null
+sudo npm install -g bower
 
 if [ "${TEST_TYPE}" = "docker" ]
 then
