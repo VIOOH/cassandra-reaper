@@ -3,6 +3,9 @@ properties([
         $class: 'LogRotator', numToKeepStr: '10', artifactNumToKeepStr: '10']],
 ])
 
+env.NODEJS_HOME = "${tool 'node'}"
+env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"  
+
 node{
   stage ('Build') {
 
@@ -12,7 +15,12 @@ node{
         maven: 'Maven-3.5.0') {
 
       // Run the maven build
-      sh "mvn clean install -Drat.numUnapprovedLicenses=10"
+      sh """
+          echo \$PATH
+          which node
+          npm install
+          mvn clean install -Drat.numUnapprovedLicenses=10
+          """
     }
   }
 
