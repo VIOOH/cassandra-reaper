@@ -3,10 +3,13 @@ properties([
         $class: 'LogRotator', numToKeepStr: '10', artifactNumToKeepStr: '10']],
 ])
 
-env.NODEJS_HOME = "${tool 'node'}"
-env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"  
+
 
 node{
+
+  env.NODEJS_HOME = "${tool 'node'}"
+  env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"  
+
   stage ('Build') {
 
     checkout scm
