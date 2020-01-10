@@ -12,7 +12,7 @@ node{
         maven: 'Maven-3.5.0') {
 
       // Run the maven build
-      sh "mvn clean install"
+      sh "mvn clean install -Drat.numUnapprovedLicenses=10"
     }
   }
 
