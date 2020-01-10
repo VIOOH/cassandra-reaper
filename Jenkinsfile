@@ -5,7 +5,7 @@ properties([
 
 
 
-node{
+node(label: 'jenkins-slave-debian'){
 
   env.NODEJS_HOME = "${tool 'node'}"
   env.PATH="${env.NODEJS_HOME}/bin:${env.PATH}"  
@@ -20,6 +20,7 @@ node{
       // Run the maven build
       sh """
           echo \$PATH
+          which node
           npm install
           mvn clean install -Drat.numUnapprovedLicenses=10
           """
