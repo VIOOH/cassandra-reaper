@@ -20,7 +20,6 @@ node{
       // Run the maven build
       sh """
           echo \$PATH
-          which node
           npm install
           mvn clean install -Drat.numUnapprovedLicenses=10
           """
