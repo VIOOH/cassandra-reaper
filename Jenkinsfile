@@ -22,7 +22,7 @@ node(label: 'jenkins-slave-debian'){
           echo \$PATH
           which node
           npm install
-          bower install
+          npm install -g bower
           mvn clean install -Drat.numUnapprovedLicenses=10
           """
     }
